@@ -7,18 +7,18 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dryburgh.web.domesticsrepairs.business.engineers.EngineerHandler;
+import com.dryburgh.web.domesticsrepairs.business.engineers.EngineerService;
 import com.dryburgh.web.domesticsrepairs.data.entity.Appointment;
 
 @Service
-public class AppointmentHandler {
+public class AppointmentService {
 
-	private final EngineerHandler engineerHandler;
+	private final EngineerService engineerHandler;
 
 	private List<Appointment> appointments = new ArrayList<>();
 
 	@Autowired
-	public AppointmentHandler(EngineerHandler engineerHandler) {
+	public AppointmentService(EngineerService engineerHandler) {
 		this.engineerHandler = engineerHandler;
 	}
 
@@ -35,7 +35,7 @@ public class AppointmentHandler {
 		return appointments.get(0).getAppointmentId();
 	}
 
-	public EngineerHandler getEngineerHandler() {
+	public EngineerService getEngineerHandler() {
 		return engineerHandler;
 	}
 }
