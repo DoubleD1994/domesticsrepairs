@@ -29,4 +29,8 @@ public class HolidayService {
 		return holidayList;
 	}
 
+	public Holiday createNewHoliday(Holiday newHoliday) {
+		return holidayRepository.save(newHoliday);
+	}
+
 }

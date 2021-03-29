@@ -15,7 +15,7 @@ public class Holiday {
 
 	@Id
 	@Column(name="HOLIDAY_ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long holidayId;
 	
 	@Column(name="ENGINEER_ID")
