@@ -22,13 +22,7 @@ public class Holiday {
 	private long engineerId;
 		
 	@Column(name="HOLIDAY_DATE")
-	private LocalDate holidatDate;
-
-	public Holiday(long engineerId, LocalDate holidatDate) {
-		super();
-		this.engineerId = engineerId;
-		this.holidatDate = holidatDate;
-	}
+	private LocalDate holidayDate;
 
 	public long getHolidayId() {
 		return holidayId;
@@ -46,16 +40,16 @@ public class Holiday {
 		this.engineerId = engineerId;
 	}
 
-	public LocalDate getHolidatDate() {
-		return holidatDate;
+	public LocalDate getHolidayDate() {
+		return holidayDate;
 	}
 
-	public void setHolidatDate(LocalDate holidatDate) {
-		this.holidatDate = holidatDate;
+	public void setHolidayDate(LocalDate holidayDate) {
+		this.holidayDate = holidayDate;
 	}
 
 	@Override
 	public String toString() {
-		return "Holiday [holidayId=" + holidayId + ", engineerId=" + engineerId + ", holidatDate=" + holidatDate + "]";
+		return "Holiday [holidayId=" + holidayId + ", engineerId=" + engineerId + ", holidatDate=" + holidayDate + "]";
 	}
 }

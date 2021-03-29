@@ -24,15 +24,7 @@ public class EngineerService {
 	public List<Engineer> getAllEngineers() {
 		Iterable<Engineer> allEngineers = engineerRepository.findAll();
 		List<Engineer> engineersList = new ArrayList<>();
-		allEngineers.forEach(engineer -> {
-			Engineer listEngineer = new Engineer();
-			listEngineer.setEngineerId(engineer.getEngineerId());
-			listEngineer.setEngineerName(engineer.getEngineerName());
-			listEngineer.setEngineerEmail(engineer.getEngineerEmail());
-			listEngineer.setEngineerPhoneNumber(engineer.getEngineerPhoneNumber());
-			listEngineer.setEngineerPassword(engineer.getEngineerPassword());
-			engineersList.add(listEngineer);
-		});
+		allEngineers.forEach(engineer -> {engineersList.add(engineer);});
 		return engineersList;
 	}
 
