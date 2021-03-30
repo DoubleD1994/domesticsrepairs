@@ -33,4 +33,16 @@ public class HolidayService {
 		return holidayRepository.save(newHoliday);
 	}
 
+	public Holiday getHolidayByHolidayId(long holidayId) {
+		return holidayRepository.findById(holidayId).get();
+	}
+
+	public void updateHoliday(long holidayId, Holiday updateHoliday) {
+		holidayRepository.updateHoliday(holidayId, updateHoliday.getHolidayStartDate(), updateHoliday.getHolidayEndDate());
+	}
+
+	public void deleteHoliday(long holidayId) {
+		holidayRepository.deleteById(holidayId);
+	}
+
 }
