@@ -40,6 +40,12 @@ public class HolidayController {
 		return holidayService.getHolidayByHolidayId(holidayId);
 	}
 	
+	@GetMapping("/engineer/{engineerId}")
+	@ResponseStatus(HttpStatus.OK)
+	public List<Holiday> getHolidaysByEngineerId(@PathVariable(name="engineerId") long engineerId){
+		return holidayService.getHolidayByEngineerId(engineerId);
+	}
+	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Holiday createNewHoliday(@RequestBody Holiday newHoliday) {

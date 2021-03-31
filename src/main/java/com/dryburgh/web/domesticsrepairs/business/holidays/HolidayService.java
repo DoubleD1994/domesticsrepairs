@@ -28,6 +28,13 @@ public class HolidayService {
 		holidays.forEach(holiday -> {holidayList.add(holiday);});
 		return holidayList;
 	}
+	
+	public List<Holiday> getHolidayByEngineerId(long engineerId){
+		Iterable<Holiday> holidays = holidayRepository.getHolidayByEngineerId(engineerId);
+		List<Holiday> holidayList = new ArrayList<>();
+		holidays.forEach(holiday -> {holidayList.add(holiday);});
+		return holidayList;
+	}
 
 	public Holiday createNewHoliday(Holiday newHoliday) {
 		return holidayRepository.save(newHoliday);
