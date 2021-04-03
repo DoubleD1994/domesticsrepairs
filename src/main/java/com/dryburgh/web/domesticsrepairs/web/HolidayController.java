@@ -1,5 +1,6 @@
 package com.dryburgh.web.domesticsrepairs.web;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -44,6 +46,12 @@ public class HolidayController {
 	@ResponseStatus(HttpStatus.OK)
 	public List<Holiday> getHolidaysByEngineerId(@PathVariable(name="engineerId") long engineerId){
 		return holidayService.getHolidayByEngineerId(engineerId);
+	}
+	
+	@GetMapping("/specificDates")
+	@ResponseStatus(HttpStatus.OK)
+	public List<Holiday> getHolidaysByDates(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate){
+		return holidayService.getHolidaysByDates(LocalDate.parse(startDate), LocalDate.parse(endDate));
 	}
 	
 	@PostMapping
