@@ -1,5 +1,6 @@
 package com.dryburgh.web.domesticsrepairs.business.holidays;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,20 @@ public class HolidayService {
 		holidays.forEach(holiday -> {holidayList.add(holiday);});
 		return holidayList;
 	}
+	
+	public List<Holiday> getHolidayByEngineerId(long engineerId){
+		Iterable<Holiday> holidays = holidayRepository.getHolidayByEngineerId(engineerId);
+		List<Holiday> holidayList = new ArrayList<>();
+		holidays.forEach(holiday -> {holidayList.add(holiday);});
+		return holidayList;
+	}
+	
+	public List<Holiday> getHolidaysByDates(LocalDate startDate, LocalDate endDate) {
+		Iterable<Holiday> holidays = holidayRepository.getHolidayByDates(startDate, endDate);
+		List<Holiday> holidayList = new ArrayList<>();
+		holidays.forEach(holiday -> {holidayList.add(holiday);});
+		return holidayList;
+	}
 
 	public Holiday createNewHoliday(Holiday newHoliday) {
 		return holidayRepository.save(newHoliday);
@@ -44,5 +59,4 @@ public class HolidayService {
 	public void deleteHoliday(long holidayId) {
 		holidayRepository.deleteById(holidayId);
 	}
-
 }

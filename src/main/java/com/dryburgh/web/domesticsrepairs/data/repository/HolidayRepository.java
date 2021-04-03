@@ -19,4 +19,9 @@ public interface HolidayRepository extends CrudRepository<Holiday, Long> {
 	@Query("UPDATE Holiday h SET h.holidayStartDate= :holidayStartDate, h.holidayEndDate= :holidayEndDate WHERE h.holidayId= :holidayId")
 	void updateHoliday(@Param("holidayId") Long holidayId, @Param("holidayStartDate") LocalDate holidayStartDate, @Param("holidayEndDate") LocalDate holidayEndDate);
 	
+	@Query("SELECT h FROM Holiday h WHERE h.engineerId= :engineerId")
+	Iterable<Holiday> getHolidayByEngineerId(@Param("engineerId") Long engineerId); 
+	
+	@Query("SELECT h FROM Holiday h WHERE h.holidayStartDate>=:startDate AND h.holidayEndDate <=:endDate")
+	Iterable<Holiday> getHolidayByDates(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate); 
 }
