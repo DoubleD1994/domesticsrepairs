@@ -9,15 +9,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.dryburgh.web.domesticsrepairs.business.appointments.TimeslotType;
-
 @Entity
 @Table(name="APPOINTMENT")
 public class Appointment {
 
 	
 	@Id
-	@Column(name="APPOINTEMT_ID")
+	@Column(name="APPOINTMENT_ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long appointmentId;
 	
@@ -37,7 +35,7 @@ public class Appointment {
 	private String customerEmail;
 	
 	@Column(name="TIMESLOT")
-	private TimeslotType timeslotType;
+	private String timeslotType;
 	
 	@Column(name="APPOINTMENT_DATE")
 	private LocalDate appointmentDay;
@@ -49,19 +47,7 @@ public class Appointment {
 	private String workDone;
 	
 	@Column(name="CHARGE")
-	private double charge;
-	
-	
-	public Appointment(long engineerId, String customerName, String customerAddress, String customerPhoneNumber, String customerEmail,
-			TimeslotType timeslot, LocalDate appointmentDate) {
-		this.engineerId = engineerId;
-		this.customerName = customerName;
-		this.customerAddress = customerAddress;
-		this.customerPhoneNumber = customerPhoneNumber;
-		this.customerEmail = customerEmail;
-		this.timeslotType = timeslot;
-		this.appointmentDay = appointmentDate;
-	}
+	private Double charge;
 
 	public long getAppointmentId() {
 		return this.appointmentId;
@@ -111,11 +97,11 @@ public class Appointment {
 		this.customerEmail = customerEmail;
 	}
 
-	public TimeslotType getTimeslotType() {
+	public String getTimeslotType() {
 		return timeslotType;
 	}
 
-	public void setTimeslotType(TimeslotType timeslotType) {
+	public void setTimeslotType(String timeslotType) {
 		this.timeslotType = timeslotType;
 	}
 
@@ -143,11 +129,11 @@ public class Appointment {
 		this.workDone = workDone;
 	}
 
-	public double getCharge() {
+	public Double getCharge() {
 		return charge;
 	}
 
-	public void setCharge(double charge) {
+	public void setCharge(Double charge) {
 		this.charge = charge;
 	}
 
