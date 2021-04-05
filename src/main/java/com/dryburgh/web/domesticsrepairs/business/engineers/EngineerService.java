@@ -12,12 +12,10 @@ import com.dryburgh.web.domesticsrepairs.data.repository.EngineerRepository;
 @Service
 public class EngineerService {
 
-	private EngineerPool engineerPool;
 	private final EngineerRepository engineerRepository;
 
 	@Autowired
 	public EngineerService(EngineerRepository engineerRepository) {
-		engineerPool = new EngineerPool();
 		this.engineerRepository = engineerRepository;
 	}
 
@@ -30,10 +28,6 @@ public class EngineerService {
 
 	public Engineer getEngineerByEngineerId(long engineerId) {
 		return engineerRepository.findById(engineerId).get();
-	}
-
-	public Engineer getAvailableEngineerForAppointment() {
-		return engineerPool.getEngineerFromList();
 	}
 
 	public void createNewEngineer(Engineer newEngineer) {
