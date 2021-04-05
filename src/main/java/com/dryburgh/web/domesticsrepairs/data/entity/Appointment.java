@@ -16,7 +16,7 @@ public class Appointment {
 	
 	@Id
 	@Column(name="APPOINTMENT_ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long appointmentId;
 	
 	@Column(name="ENGINEER_ID")
