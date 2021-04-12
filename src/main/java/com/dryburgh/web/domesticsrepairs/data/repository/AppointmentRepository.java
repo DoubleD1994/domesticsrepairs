@@ -24,4 +24,10 @@ public interface AppointmentRepository extends CrudRepository<Appointment, Long>
 			@Param("customerPhoneNumber") String customerPhoneNumber, @Param("customerEmail") String customerEmail,
 			@Param("timeslotType") String timeslotType, @Param("appointmentDay") LocalDate appointmentDay);
 
+	@Query("SELECT a FROM Appointment a WHERE a.engineerId= :engineerId")
+	Iterable<Appointment> getAppointmentsByEngineerId(@Param("engineerId") Long engineerId);
+
+	@Query("SELECT a FROM Appointment a WHERE a.appointmentDay>=:startDate AND a.appointmentDay <=:endDate")
+	Iterable<Appointment> getAppointmentsByDates(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+
 }

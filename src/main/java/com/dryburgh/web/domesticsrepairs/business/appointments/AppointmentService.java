@@ -1,5 +1,6 @@
 package com.dryburgh.web.domesticsrepairs.business.appointments;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.dryburgh.web.domesticsrepairs.business.engineers.EngineerService;
 import com.dryburgh.web.domesticsrepairs.business.holidays.HolidayService;
 import com.dryburgh.web.domesticsrepairs.data.entity.Appointment;
+import com.dryburgh.web.domesticsrepairs.data.entity.Holiday;
 import com.dryburgh.web.domesticsrepairs.data.repository.AppointmentRepository;
 
 @Service
@@ -35,9 +37,27 @@ public class AppointmentService {
 		});
 		return appointmentsList;
 	}
-
+	
 	public Appointment getAppointmentByAppointmentId(long appointmentId) {
 		return appointmentRepository.findById(appointmentId).get();
+	}
+	
+	public List<Appointment> getHolidayByEngineerId(long engineerId) {
+		Iterable<Appointment> appointments = appointmentRepository.getAppointmentsByEngineerId(engineerId);
+		List<Appointment> appointmentsList = new ArrayList<>();
+		appointments.forEach(appointment -> {
+			appointmentsList.add(appointment);
+		});
+		return appointmentsList;
+	}
+	
+	public List<Appointment> getAppointmentsByDates(LocalDate startDate, LocalDate endDate) {
+		Iterable<Appointment> appointments = appointmentRepository.getAppointmentsByDates(startDate, endDate);
+		List<Appointment> appointmentsList = new ArrayList<>();
+		appointments.forEach(appointment -> {
+			appointmentsList.add(appointment);
+		});
+		return appointmentsList;
 	}
 
 	public Appointment createNewAppointment(Appointment appointment) {
@@ -53,5 +73,4 @@ public class AppointmentService {
 	public void deleteAppointment(long appointmentId) {
 		appointmentRepository.deleteById(appointmentId);
 	}
-
 }
