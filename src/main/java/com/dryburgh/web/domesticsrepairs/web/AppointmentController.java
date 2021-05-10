@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dryburgh.web.domesticsrepairs.business.appointments.AppointmentService;
 import com.dryburgh.web.domesticsrepairs.data.entity.Appointment;
-import com.dryburgh.web.domesticsrepairs.data.entity.Holiday;
 
 @RestController
 @RequestMapping("/appointments")
@@ -55,6 +54,11 @@ public class AppointmentController {
 		return appointmentService.getAppointmentsByDates(LocalDate.parse(startDate), LocalDate.parse(endDate));
 	}
 	
+	@GetMapping("/engineer/{engineerId}/specificDates")
+	@ResponseStatus(HttpStatus.OK)
+	public List<Appointment> getAppointmentsByDates(@PathVariable(name="engineerId") long engineerId, @RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate){
+		return appointmentService.getEngineerAppointmentsByDates(engineerId, LocalDate.parse(startDate), LocalDate.parse(endDate));
+	}
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
@@ -66,6 +70,13 @@ public class AppointmentController {
 	@ResponseStatus(HttpStatus.ACCEPTED)
 	public String updateAppointment(@PathVariable(name="appointmentId") long appointmentId, @RequestBody Appointment appointment) {
 		appointmentService.updateAppointment(appointmentId, appointment);
+		return "appointment updated";
+	}
+	
+	@PutMapping("/{appointmentId}/completeWork")
+	@ResponseStatus(HttpStatus.ACCEPTED)
+	public String completeWorkOnAppointment(@PathVariable(name="appointmentId") long appointmentId, @RequestBody Appointment appointment) {
+		appointmentService.completeWorkOnAppointment(appointmentId, appointment.getCharge(), appointment.getWorkDone());
 		return "appointment updated";
 	}
 	

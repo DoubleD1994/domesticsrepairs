@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.dryburgh.web.domesticsrepairs.business.engineers.EngineerService;
 import com.dryburgh.web.domesticsrepairs.business.holidays.HolidayService;
 import com.dryburgh.web.domesticsrepairs.data.entity.Appointment;
-import com.dryburgh.web.domesticsrepairs.data.entity.Holiday;
 import com.dryburgh.web.domesticsrepairs.data.repository.AppointmentRepository;
 
 @Service
@@ -31,11 +30,7 @@ public class AppointmentService {
 
 	public List<Appointment> getAllAppointments() {
 		Iterable<Appointment> appointments = appointmentRepository.findAll();
-		List<Appointment> appointmentsList = new ArrayList<>();
-		appointments.forEach(appointment -> {
-			appointmentsList.add(appointment);
-		});
-		return appointmentsList;
+		return addAppointmentsToList(appointments);
 	}
 	
 	public Appointment getAppointmentByAppointmentId(long appointmentId) {
@@ -44,20 +39,17 @@ public class AppointmentService {
 	
 	public List<Appointment> getHolidayByEngineerId(long engineerId) {
 		Iterable<Appointment> appointments = appointmentRepository.getAppointmentsByEngineerId(engineerId);
-		List<Appointment> appointmentsList = new ArrayList<>();
-		appointments.forEach(appointment -> {
-			appointmentsList.add(appointment);
-		});
-		return appointmentsList;
+		return addAppointmentsToList(appointments);
 	}
 	
 	public List<Appointment> getAppointmentsByDates(LocalDate startDate, LocalDate endDate) {
 		Iterable<Appointment> appointments = appointmentRepository.getAppointmentsByDates(startDate, endDate);
-		List<Appointment> appointmentsList = new ArrayList<>();
-		appointments.forEach(appointment -> {
-			appointmentsList.add(appointment);
-		});
-		return appointmentsList;
+		return addAppointmentsToList(appointments);
+	}
+	
+	public List<Appointment> getEngineerAppointmentsByDates(long engineerId, LocalDate startDate, LocalDate endDate) {
+		Iterable<Appointment> appointments = appointmentRepository.getEngineerAppointmentsByDates(engineerId, startDate, endDate);
+		return addAppointmentsToList(appointments);
 	}
 
 	public Appointment createNewAppointment(Appointment appointment) {
@@ -69,8 +61,20 @@ public class AppointmentService {
 				appointment.getCustomerName(), appointment.getCustomerAddress(), appointment.getCustomerPhoneNumber(), 
 				appointment.getCustomerEmail(), appointment.getTimeslotType(), appointment.getAppointmentDay());
 	}
+	
+	public void completeWorkOnAppointment(Long appointmentId, Double charge, String workDone) {
+		appointmentRepository.completeWorkOnAppointment(appointmentId, charge, workDone);
+	}
 
 	public void deleteAppointment(long appointmentId) {
 		appointmentRepository.deleteById(appointmentId);
+	}
+	
+	private List<Appointment> addAppointmentsToList(Iterable<Appointment> appointments) {
+		List<Appointment> appointmentsList = new ArrayList<>();
+		appointments.forEach(appointment -> {
+			appointmentsList.add(appointment);
+		});
+		return appointmentsList;
 	}
 }

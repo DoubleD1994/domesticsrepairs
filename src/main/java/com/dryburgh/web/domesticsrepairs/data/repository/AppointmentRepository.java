@@ -30,4 +30,11 @@ public interface AppointmentRepository extends CrudRepository<Appointment, Long>
 	@Query("SELECT a FROM Appointment a WHERE a.appointmentDay>=:startDate AND a.appointmentDay <=:endDate")
 	Iterable<Appointment> getAppointmentsByDates(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 
+	@Query("SELECT a FROM Appointment a WHERE a.engineerId= :engineerId AND (a.appointmentDay>=:startDate AND a.appointmentDay <=:endDate)")
+	Iterable<Appointment> getEngineerAppointmentsByDates(@Param("engineerId") long engineerId, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+
+	@Transactional
+	@Modifying
+	@Query("UPDATE Appointment a SET a.charge= :charge, a.workDone= :workDone, a.isComplete=true WHERE a.appointmentId= :appointmentId")
+	void completeWorkOnAppointment(@Param("appointmentId") Long appointmentId, @Param("charge") Double charge, @Param("workDone") String workDone);
 }

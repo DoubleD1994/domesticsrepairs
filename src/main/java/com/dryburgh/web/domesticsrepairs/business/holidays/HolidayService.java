@@ -22,23 +22,17 @@ public class HolidayService {
 	
 	public List<Holiday> getAllHolidays() {
 		Iterable<Holiday> holidays = holidayRepository.findAll();
-		List<Holiday> holidayList = new ArrayList<>();
-		holidays.forEach(holiday -> {holidayList.add(holiday);});
-		return holidayList;
+		return addHolidaysToList(holidays);
 	}
 	
 	public List<Holiday> getHolidayByEngineerId(long engineerId){
 		Iterable<Holiday> holidays = holidayRepository.getHolidayByEngineerId(engineerId);
-		List<Holiday> holidayList = new ArrayList<>();
-		holidays.forEach(holiday -> {holidayList.add(holiday);});
-		return holidayList;
+		return addHolidaysToList(holidays);
 	}
 	
 	public List<Holiday> getHolidaysByDates(LocalDate startDate, LocalDate endDate) {
 		Iterable<Holiday> holidays = holidayRepository.getHolidayByDates(startDate, endDate);
-		List<Holiday> holidayList = new ArrayList<>();
-		holidays.forEach(holiday -> {holidayList.add(holiday);});
-		return holidayList;
+		return addHolidaysToList(holidays);
 	}
 
 	public Holiday createNewHoliday(Holiday newHoliday) {
@@ -55,5 +49,11 @@ public class HolidayService {
 
 	public void deleteHoliday(long holidayId) {
 		holidayRepository.deleteById(holidayId);
+	}
+	
+	private List<Holiday> addHolidaysToList(Iterable<Holiday> holidays) {
+		List<Holiday> holidayList = new ArrayList<>();
+		holidays.forEach(holiday -> {holidayList.add(holiday);});
+		return holidayList;
 	}
 }
