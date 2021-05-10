@@ -12,36 +12,22 @@ import com.dryburgh.web.domesticsrepairs.data.repository.EngineerRepository;
 @Service
 public class EngineerService {
 
-	private EngineerPool engineerPool;
 	private final EngineerRepository engineerRepository;
 
 	@Autowired
 	public EngineerService(EngineerRepository engineerRepository) {
-		engineerPool = new EngineerPool();
 		this.engineerRepository = engineerRepository;
 	}
 
 	public List<Engineer> getAllEngineers() {
 		Iterable<Engineer> allEngineers = engineerRepository.findAll();
 		List<Engineer> engineersList = new ArrayList<>();
-		allEngineers.forEach(engineer -> {
-			Engineer listEngineer = new Engineer();
-			listEngineer.setEngineerId(engineer.getEngineerId());
-			listEngineer.setEngineerName(engineer.getEngineerName());
-			listEngineer.setEngineerEmail(engineer.getEngineerEmail());
-			listEngineer.setEngineerPhoneNumber(engineer.getEngineerPhoneNumber());
-			listEngineer.setEngineerPassword(engineer.getEngineerPassword());
-			engineersList.add(listEngineer);
-		});
+		allEngineers.forEach(engineer -> {engineersList.add(engineer);});
 		return engineersList;
 	}
 
 	public Engineer getEngineerByEngineerId(long engineerId) {
 		return engineerRepository.findById(engineerId).get();
-	}
-
-	public Engineer getAvailableEngineerForAppointment() {
-		return engineerPool.getEngineerFromList();
 	}
 
 	public void createNewEngineer(Engineer newEngineer) {

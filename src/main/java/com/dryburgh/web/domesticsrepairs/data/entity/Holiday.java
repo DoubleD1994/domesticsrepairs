@@ -15,20 +15,17 @@ public class Holiday {
 
 	@Id
 	@Column(name="HOLIDAY_ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long holidayId;
 	
 	@Column(name="ENGINEER_ID")
 	private long engineerId;
 		
-	@Column(name="HOLIDAY_DATE")
-	private LocalDate holidatDate;
-
-	public Holiday(long engineerId, LocalDate holidatDate) {
-		super();
-		this.engineerId = engineerId;
-		this.holidatDate = holidatDate;
-	}
+	@Column(name="HOLIDAY_START_DATE")
+	private LocalDate holidayStartDate;
+	
+	@Column(name="HOLIDAY_END_DATE")
+	private LocalDate holidayEndDate;
 
 	public long getHolidayId() {
 		return holidayId;
@@ -46,16 +43,30 @@ public class Holiday {
 		this.engineerId = engineerId;
 	}
 
-	public LocalDate getHolidatDate() {
-		return holidatDate;
+	public LocalDate getHolidayStartDate() {
+		return holidayStartDate;
 	}
 
-	public void setHolidatDate(LocalDate holidatDate) {
-		this.holidatDate = holidatDate;
+	public void setHolidayStartDate(LocalDate holidayStartDate) {
+		this.holidayStartDate = holidayStartDate;
+	}
+
+	public LocalDate getHolidayEndDate() {
+		return holidayEndDate;
+	}
+
+	public void setHolidayEndDate(LocalDate holidayEndDate) {
+		this.holidayEndDate = holidayEndDate;
 	}
 
 	@Override
 	public String toString() {
-		return "Holiday [holidayId=" + holidayId + ", engineerId=" + engineerId + ", holidatDate=" + holidatDate + "]";
+		return "Holiday [holidayId=" + holidayId + ", engineerId=" + engineerId + ", holidayStartDate="
+				+ holidayStartDate + ", holidayEndDate=" + holidayEndDate + ", getHolidayId()=" + getHolidayId()
+				+ ", getEngineerId()=" + getEngineerId() + ", getHolidayStartDate()=" + getHolidayStartDate()
+				+ ", getHolidayEndDate()=" + getHolidayEndDate() + ", getClass()=" + getClass() + ", hashCode()="
+				+ hashCode() + ", toString()=" + super.toString() + "]";
 	}
+
+	
 }
