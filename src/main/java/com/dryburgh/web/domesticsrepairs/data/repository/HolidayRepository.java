@@ -22,6 +22,6 @@ public interface HolidayRepository extends CrudRepository<Holiday, Long> {
 	@Query("SELECT h FROM Holiday h WHERE h.engineerId= :engineerId")
 	Iterable<Holiday> getHolidayByEngineerId(@Param("engineerId") Long engineerId); 
 	
-	@Query("SELECT h FROM Holiday h WHERE h.holidayStartDate>=:startDate AND h.holidayEndDate <=:endDate")
+	@Query("SELECT h FROM Holiday h WHERE (h.holidayStartDate BETWEEN :startDate and :endDate) OR (h.holidayEndDate BETWEEN :startDate and :endDate)")
 	Iterable<Holiday> getHolidayByDates(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate); 
 }
