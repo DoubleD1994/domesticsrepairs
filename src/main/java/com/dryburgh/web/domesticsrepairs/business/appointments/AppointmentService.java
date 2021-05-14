@@ -7,8 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dryburgh.web.domesticsrepairs.business.engineers.EngineerService;
-import com.dryburgh.web.domesticsrepairs.business.holidays.HolidayService;
+import com.dryburgh.web.domesticsrepairs.business.engineers.EngineerPool;
 import com.dryburgh.web.domesticsrepairs.data.entity.Appointment;
 import com.dryburgh.web.domesticsrepairs.data.repository.AppointmentRepository;
 
@@ -16,16 +15,13 @@ import com.dryburgh.web.domesticsrepairs.data.repository.AppointmentRepository;
 public class AppointmentService {
 
 	private final AppointmentRepository appointmentRepository;
-
-	private final EngineerService engineerService;
-	private final HolidayService holidayService;
+	private final EngineerPool engineerPool;
+	
 
 	@Autowired
-	public AppointmentService(EngineerService engineerService, HolidayService holidayService,
-			AppointmentRepository appointmentRepository) {
-		this.engineerService = engineerService;
-		this.holidayService = holidayService;
+	public AppointmentService(AppointmentRepository appointmentRepository, EngineerPool engineerPool) {
 		this.appointmentRepository = appointmentRepository;
+		this.engineerPool = engineerPool;
 	}
 
 	public List<Appointment> getAllAppointments() {
@@ -53,8 +49,7 @@ public class AppointmentService {
 	}
 
 	public Appointment createNewAppointment(Appointment appointment) {
-		List<Long> engineersOnHoliday = holidayService.getEningeersOnHoliday(appointment.getAppointmentDay(), appointment.getAppointmentDay());
-		System.out.println(engineersOnHoliday);
+		engineerPool.getAvailableEngineerForAppointment(appointment);
 		return appointmentRepository.save(appointment);
 	}
 
