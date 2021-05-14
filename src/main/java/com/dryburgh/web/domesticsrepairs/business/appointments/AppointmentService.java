@@ -53,6 +53,8 @@ public class AppointmentService {
 	}
 
 	public Appointment createNewAppointment(Appointment appointment) {
+		List<Long> engineersOnHoliday = holidayService.getEningeersOnHoliday(appointment.getAppointmentDay(), appointment.getAppointmentDay());
+		System.out.println(engineersOnHoliday);
 		return appointmentRepository.save(appointment);
 	}
 
