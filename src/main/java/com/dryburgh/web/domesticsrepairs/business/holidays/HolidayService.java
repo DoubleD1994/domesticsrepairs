@@ -34,6 +34,13 @@ public class HolidayService {
 		Iterable<Holiday> holidays = holidayRepository.getHolidayByDates(startDate, endDate);
 		return addHolidaysToList(holidays);
 	}
+	
+	public List<Long> getEningeersOnHoliday(LocalDate startDate, LocalDate endDate) {
+		Iterable<Long> engineerIds = holidayRepository.getEngineersOnHoliday(startDate, endDate);
+		List<Long> engineersList = new ArrayList<>();
+		engineerIds.forEach(engineerId -> {engineersList.add(engineerId);});
+		return engineersList;
+	}
 
 	public Holiday createNewHoliday(Holiday newHoliday) {
 		return holidayRepository.save(newHoliday);
