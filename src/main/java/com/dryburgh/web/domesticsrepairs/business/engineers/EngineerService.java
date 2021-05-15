@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import com.dryburgh.web.domesticsrepairs.business.exceptions.EngineerNotFoundException;
 import com.dryburgh.web.domesticsrepairs.data.entity.Engineer;
 import com.dryburgh.web.domesticsrepairs.data.repository.EngineerRepository;
 
@@ -42,5 +45,13 @@ public class EngineerService {
 
 	public void deleteEngineer(long engineerId) {
 		engineerRepository.deleteById(engineerId);
+	}
+ 
+	public Engineer loginEngineerToPortal(String engineerEmail, String engineerPassword) {
+		Engineer engineer = engineerRepository.findEngineerByEmail(engineerEmail);
+		if(!engineer.getEngineerPassword().trim().equals(engineerPassword)) {
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "engineer email and password mismatch");
+		}
+		return engineer;
 	}
 }
