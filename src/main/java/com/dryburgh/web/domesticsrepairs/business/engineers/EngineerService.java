@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.dryburgh.web.domesticsrepairs.business.exceptions.EngineerNotFoundException;
 import com.dryburgh.web.domesticsrepairs.data.entity.Engineer;
 import com.dryburgh.web.domesticsrepairs.data.repository.EngineerRepository;
 
