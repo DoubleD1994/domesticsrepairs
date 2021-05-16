@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.dryburgh.web.domesticsrepairs.data.entity.Holiday;
 import com.dryburgh.web.domesticsrepairs.data.repository.HolidayRepository;
@@ -43,6 +45,7 @@ public class HolidayService {
 	}
 
 	public Holiday createNewHoliday(Holiday newHoliday) {
+		validateHolidayDates(newHoliday.getHolidayStartDate(), newHoliday.getHolidayEndDate());
 		return holidayRepository.save(newHoliday);
 	}
 
@@ -51,6 +54,7 @@ public class HolidayService {
 	}
 
 	public void updateHoliday(long holidayId, Holiday updateHoliday) {
+		validateHolidayDates(updateHoliday.getHolidayStartDate(), updateHoliday.getHolidayEndDate());
 		holidayRepository.updateHoliday(holidayId, updateHoliday.getHolidayStartDate(), updateHoliday.getHolidayEndDate());
 	}
 
@@ -62,5 +66,22 @@ public class HolidayService {
 		List<Holiday> holidayList = new ArrayList<>();
 		holidays.forEach(holiday -> {holidayList.add(holiday);});
 		return holidayList;
+	}
+	
+	private void validateHolidayDates(LocalDate holidayStartDate, LocalDate holidayEndDate) {
+		checkHolidayStartDateIsInFuture(holidayStartDate);
+		checkHolidayEndDateIsNotBeforeHolidayStartDate(holidayStartDate, holidayEndDate);
+	}
+	
+	private void checkHolidayEndDateIsNotBeforeHolidayStartDate(LocalDate holidayStartDate, LocalDate holidayEndDate) {
+		if(holidayEndDate.isBefore(holidayStartDate)) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "holiday end date can't be before start date.");
+		}
+	}
+
+	private void checkHolidayStartDateIsInFuture(LocalDate holidayStartDate) {
+		if(holidayStartDate.isBefore(LocalDate.now().plusDays(1))) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "holiday start date must be at least one day in the future");
+		}
 	}
 }

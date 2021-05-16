@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.dryburgh.web.domesticsrepairs.business.engineers.EngineerPool;
 import com.dryburgh.web.domesticsrepairs.data.entity.Appointment;
@@ -49,12 +51,14 @@ public class AppointmentService {
 	}
 
 	public Appointment createNewAppointment(Appointment appointment) {
+		checkAppointmentIsInFuture(appointment);
 		appointment.setEngineerId(engineerPool.getAvailableEngineerForAppointment(appointment,
 				getEngineersWithMaxAppointments(appointment)));
 		return appointmentRepository.save(appointment);
 	}
 
 	public void updateAppointment(Long appointmentId, Appointment appointment) {
+		checkAppointmentIsInFuture(appointment);
 		appointmentRepository.updateAppointment(appointmentId, appointment.getEngineerId(),
 				appointment.getCustomerName(), appointment.getCustomerAddress(), appointment.getCustomerPhoneNumber(),
 				appointment.getCustomerEmail(), appointment.getTimeslotType(), appointment.getAppointmentDay());
@@ -84,5 +88,11 @@ public class AppointmentService {
 			appointmentsList.add(appointment);
 		});
 		return appointmentsList;
+	}
+	
+	private void checkAppointmentIsInFuture(Appointment appointment) {
+		if(appointment.getAppointmentDay().isBefore(LocalDate.now().plusDays(1))) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date of appointment must be at least one day in the future");
+		}
 	}
 }
