@@ -1,6 +1,5 @@
 package com.dryburgh.web.domesticsrepairs.business.engineers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.dryburgh.web.domesticsrepairs.business.utils.IterableHandler;
 import com.dryburgh.web.domesticsrepairs.data.entity.Engineer;
 import com.dryburgh.web.domesticsrepairs.data.repository.EngineerRepository;
 
@@ -15,17 +15,17 @@ import com.dryburgh.web.domesticsrepairs.data.repository.EngineerRepository;
 public class EngineerService {
 
 	private final EngineerRepository engineerRepository;
+	private final IterableHandler<Engineer> iterableHandler;
 
 	@Autowired
-	public EngineerService(EngineerRepository engineerRepository) {
+	public EngineerService(EngineerRepository engineerRepository, IterableHandler<Engineer> iterableHandler) {
 		this.engineerRepository = engineerRepository;
+		this.iterableHandler = iterableHandler;
 	}
 
 	public List<Engineer> getAllEngineers() {
 		Iterable<Engineer> allEngineers = engineerRepository.findAll();
-		List<Engineer> engineersList = new ArrayList<>();
-		allEngineers.forEach(engineer -> {engineersList.add(engineer);});
-		return engineersList;
+		return iterableHandler.addObjectToList(allEngineers);
 	}
 
 	public Engineer getEngineerByEngineerId(long engineerId) {

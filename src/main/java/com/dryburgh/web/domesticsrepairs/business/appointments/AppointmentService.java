@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.dryburgh.web.domesticsrepairs.business.engineers.EngineerPool;
+import com.dryburgh.web.domesticsrepairs.business.utils.IterableHandler;
 import com.dryburgh.web.domesticsrepairs.data.entity.Appointment;
 import com.dryburgh.web.domesticsrepairs.data.repository.AppointmentRepository;
 
@@ -18,16 +19,18 @@ public class AppointmentService {
 
 	private final AppointmentRepository appointmentRepository;
 	private final EngineerPool engineerPool;
+	private final IterableHandler<Appointment> iterableHandler;
 
 	@Autowired
-	public AppointmentService(AppointmentRepository appointmentRepository, EngineerPool engineerPool) {
+	public AppointmentService(AppointmentRepository appointmentRepository, EngineerPool engineerPool, IterableHandler<Appointment> iterableHandler) {
 		this.appointmentRepository = appointmentRepository;
 		this.engineerPool = engineerPool;
+		this.iterableHandler = iterableHandler;
 	}
 
 	public List<Appointment> getAllAppointments() {
 		Iterable<Appointment> appointments = appointmentRepository.findAll();
-		return addAppointmentsToList(appointments);
+		return iterableHandler.addObjectToList(appointments);
 	}
 
 	public Appointment getAppointmentByAppointmentId(long appointmentId) {
@@ -36,18 +39,18 @@ public class AppointmentService {
 
 	public List<Appointment> getHolidayByEngineerId(long engineerId) {
 		Iterable<Appointment> appointments = appointmentRepository.getAppointmentsByEngineerId(engineerId);
-		return addAppointmentsToList(appointments);
+		return iterableHandler.addObjectToList(appointments);
 	}
 
 	public List<Appointment> getAppointmentsByDates(LocalDate startDate, LocalDate endDate) {
 		Iterable<Appointment> appointments = appointmentRepository.getAppointmentsByDates(startDate, endDate);
-		return addAppointmentsToList(appointments);
+		return iterableHandler.addObjectToList(appointments);
 	}
 
 	public List<Appointment> getEngineerAppointmentsByDates(long engineerId, LocalDate startDate, LocalDate endDate) {
 		Iterable<Appointment> appointments = appointmentRepository.getEngineerAppointmentsByDates(engineerId, startDate,
 				endDate);
-		return addAppointmentsToList(appointments);
+		return iterableHandler.addObjectToList(appointments);
 	}
 
 	public Appointment createNewAppointment(Appointment appointment) {
@@ -80,14 +83,6 @@ public class AppointmentService {
 			engineersList.add(engineerId);
 		});
 		return engineersList;
-	}
-
-	private List<Appointment> addAppointmentsToList(Iterable<Appointment> appointments) {
-		List<Appointment> appointmentsList = new ArrayList<>();
-		appointments.forEach(appointment -> {
-			appointmentsList.add(appointment);
-		});
-		return appointmentsList;
 	}
 	
 	private void checkAppointmentIsInFuture(Appointment appointment) {
