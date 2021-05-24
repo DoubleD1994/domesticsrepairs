@@ -22,7 +22,8 @@ public class AppointmentService {
 	private final IterableHandler<Appointment> iterableHandler;
 
 	@Autowired
-	public AppointmentService(AppointmentRepository appointmentRepository, EngineerPool engineerPool, IterableHandler<Appointment> iterableHandler) {
+	public AppointmentService(AppointmentRepository appointmentRepository, EngineerPool engineerPool,
+			IterableHandler<Appointment> iterableHandler) {
 		this.appointmentRepository = appointmentRepository;
 		this.engineerPool = engineerPool;
 		this.iterableHandler = iterableHandler;
@@ -51,6 +52,14 @@ public class AppointmentService {
 		Iterable<Appointment> appointments = appointmentRepository.getEngineerAppointmentsByDates(engineerId, startDate,
 				endDate);
 		return iterableHandler.addObjectToList(appointments);
+	}
+
+	public List<LocalDate> getAvailableAppointments(String timeslotType) {
+		Long maxNumberOfAppointments = 1l; // engineerService.getEngineerCount();
+		Iterable<LocalDate> unavailableDates = appointmentRepository.getUnavailableDates(
+				LocalDate.now().plusDays(1), LocalDate.now().plusDays(14), timeslotType,
+				maxNumberOfAppointments);
+		return filterUnavailableDates(unavailableDates);
 	}
 
 	public Appointment createNewAppointment(Appointment appointment) {
@@ -84,10 +93,34 @@ public class AppointmentService {
 		});
 		return engineersList;
 	}
-	
+
+	private List<LocalDate> filterUnavailableDates(Iterable<LocalDate> unavailableDates) {
+		List<LocalDate> availableDates = new ArrayList<>();
+		datesForNextTwoWeeks(availableDates, unavailableDates);
+		return availableDates;
+	}
+
+	private void datesForNextTwoWeeks(List<LocalDate> availableDates, Iterable<LocalDate> unavailableDates) {
+		for (int i = 1; i < 14; i++) {
+			if (!dateIsUnavailable(LocalDate.now().plusDays(i), unavailableDates)) {
+				availableDates.add(LocalDate.now().plusDays(i));
+			}
+		}
+	}
+
+	private boolean dateIsUnavailable(LocalDate plusDays, Iterable<LocalDate> unavailableDates) {
+		for (LocalDate date : unavailableDates) {
+			if (plusDays.equals(date)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	private void checkAppointmentIsInFuture(Appointment appointment) {
-		if(appointment.getAppointmentDay().isBefore(LocalDate.now().plusDays(1))) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date of appointment must be at least one day in the future");
+		if (appointment.getAppointmentDay().isBefore(LocalDate.now().plusDays(1))) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+					"Date of appointment must be at least one day in the future");
 		}
 	}
 }
