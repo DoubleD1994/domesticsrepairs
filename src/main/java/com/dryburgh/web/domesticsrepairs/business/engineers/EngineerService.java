@@ -53,4 +53,8 @@ public class EngineerService {
 		}
 		return engineer;
 	}
+
+	public Long getEngineerCount() {
+		return engineerRepository.getEngineerCount();
+	}
 }
