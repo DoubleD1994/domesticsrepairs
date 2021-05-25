@@ -20,4 +20,10 @@ public interface EngineerRepository extends CrudRepository<Engineer, Long> {
 	void updateEngineer(@Param("engineerId") Long engineerId, @Param("name") String name, @Param("email") String email,
 			@Param("phoneNumber") String phoneNumber, @Param("password") String password);
 
+	@Query("SELECT e FROM Engineer e WHERE e.engineerEmail = :email")
+	Engineer findEngineerByEmail(@Param("email") String engineerEmail);
+
+	@Query("SELECT COUNT(e) FROM Engineer e")
+	Long getEngineerCount();
+
 }

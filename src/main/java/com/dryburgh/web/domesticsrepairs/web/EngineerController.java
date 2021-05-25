@@ -47,6 +47,12 @@ public class EngineerController {
 		return "New Engineer Created";
 	}
 	
+	@PostMapping("/login")
+	@ResponseStatus(HttpStatus.OK)
+	public Engineer loginEngineerToPortal(@RequestBody Engineer engineer) {
+		return engineerService.loginEngineerToPortal(engineer.getEngineerEmail(), engineer.getEngineerPassword());
+	}
+	
 	@PutMapping("/{engineerId}")
 	@ResponseStatus(HttpStatus.ACCEPTED)
 	public String updateEngineer(@PathVariable(name="engineerId") long engineerId, @RequestBody Engineer updateEngineer) {

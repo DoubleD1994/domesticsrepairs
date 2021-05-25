@@ -37,4 +37,12 @@ public interface AppointmentRepository extends CrudRepository<Appointment, Long>
 	@Modifying
 	@Query("UPDATE Appointment a SET a.charge= :charge, a.workDone= :workDone, a.isComplete=true WHERE a.appointmentId= :appointmentId")
 	void completeWorkOnAppointment(@Param("appointmentId") Long appointmentId, @Param("charge") Double charge, @Param("workDone") String workDone);
+
+	@Query("SELECT a.engineerId FROM Appointment a WHERE a.appointmentDay = :appointmentDay AND a.timeslotType = :timeslotType"
+			+ " GROUP BY a.engineerId HAVING COUNT(a.engineerId) = 5")
+	Iterable<Long> getEngineersWithMaxAppointments(@Param("appointmentDay") LocalDate appointmentDay, @Param("timeslotType") String timeslotType);
+
+	@Query("SELECT a.appointmentDay FROM Appointment a WHERE (a.appointmentDay>=:localDayPlusOne AND a.appointmentDay<=:localDayPlusFourteen) AND"
+			+ " a.timeslotType = :timeslotType GROUP BY a.appointmentDay HAVING COUNT(a.appointmentDay)=:maxNumberOfAppointments")
+	Iterable<LocalDate> getUnavailableDates(@Param("localDayPlusOne") LocalDate localDayPlusOne, @Param("localDayPlusFourteen") LocalDate localDayPlusFourteen, @Param("timeslotType") String timeslotType, @Param("maxNumberOfAppointments") Long maxNumberOfAppointments);
 }
