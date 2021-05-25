@@ -60,6 +60,12 @@ public class AppointmentController {
 		return appointmentService.getEngineerAppointmentsByDates(engineerId, LocalDate.parse(startDate), LocalDate.parse(endDate));
 	}
 	
+	@GetMapping("/availableAppointments")
+	@ResponseStatus(HttpStatus.OK)
+	public List<LocalDate> getAvailableAppointments(@RequestParam("timeslotType") String timeslotType) {
+		return appointmentService.getAvailableAppointments(timeslotType);
+	}
+	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Appointment createNewAppointment(@RequestBody Appointment appointment) {
